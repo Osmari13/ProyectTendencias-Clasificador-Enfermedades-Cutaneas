@@ -6,12 +6,12 @@ import os
 import numpy as np
 import cv2
 import conexion
-import json
+import tensorflow as tf
 
 from keras.models import load_model
 from keras.applications.imagenet_utils import preprocess_input
 
-from flask_mysqldb import MySQL,MySQLdb # pip install Flask-MySQLdb
+tf.config.set_soft_device_placement(True)
 
 width_shape=224
 height_shape = 224
@@ -22,7 +22,7 @@ names = ['ACNE', 'MELANOMA MALIGNO', 'NEVUS', 'PIE DE ATLETA',
 app = Flask(__name__)
 
 
-model_path = 'app/models/model_VGG16.h5' #El directorio .h5 tiene almacenado el modelo para realizar la prediccion 
+model_path = './models/model_VGG16.h5' #El directorio .h5 tiene almacenado el modelo para realizar la prediccion 
 
 model = load_model(model_path)
 
@@ -125,7 +125,6 @@ def upload():
         basepath = os.path.dirname(__file__) #la ruta donde se encuentra el archivo actual
         file_name = secure_filename(f.filename) # generar un nombre de archivo seguro
 
-        # extension = os.path.splitext(file_name)[1] # captura la extension del archivo
         
         file_path = os.path.join(
             basepath, 'uploads', file_name) #para guardar archivo
